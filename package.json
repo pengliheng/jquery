@@ -9,5 +9,18 @@
     "url": "git+https://github.com/pengliheng/jquery.git"
   },
   "author": "pengliheng",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@pengliheng/github-report": "^1.2.17",
+    "@pengliheng/jquery": "^1.0.0",
+    "jquery": "^3.3.1"
+  },
+  "bugs": {
+    "url": "https://github.com/pengliheng/jquery/issues"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "t": "parcel test/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
