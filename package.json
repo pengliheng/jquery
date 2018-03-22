@@ -1,0 +1,13 @@
+{
+  "name": "@pengliheng/jquery",
+  "version": "1.0.0",
+  "description": "write an jQuery",
+  "homepage": "https://chat.pipk.top/githubReport/pengliheng",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pengliheng/jquery.git"
+  },
+  "author": "pengliheng",
+  "license": "ISC"
+}
