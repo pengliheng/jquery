@@ -2,7 +2,31 @@
 
 ### usage
 ```js
-
+// 修改颜色
+$('ul li').css('color', 'red').css('data-index','dataStore').
+$('ul li').eq(2).click(() => {
+  $('li').each((dom, i) => {    // dom就是被循环的元素，为$(dom)提供初始化该dom，第i个元素。
+    $(dom).css('font-size', `${(i + 1) * 10}px`);
+  });
+});
+$.ajax({
+  url: 'https://chat.pipk.top/graphql',
+  type: 'POST',
+  data: {
+    query: `{
+      viewer{
+        login
+      }
+    }`,
+  },
+  error(err) {
+    console.log(err);
+  },
+  success(json) {
+    console.log(json);
+  },
+  dataType: 'json',
+});
 ```
 
 
