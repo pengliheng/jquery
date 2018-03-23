@@ -11,9 +11,8 @@
       const type = typeOf(args)
       if(type==='String') {
         this.elements = document.querySelectorAll(args);
-      }else if(type === 'HTMLLIElement'){
+      }else if(type === 'HTMLLIElement'||type === 'HTMLDocument'||type === 'Window'){
         // 初始化dom
-        console.log(type);
         this.elements = [args];
       }
       this.author = 'pengliheng';
@@ -62,6 +61,30 @@
         func(dom,i)
       })
       return this;
+    }
+    ready(func){
+      document.addEventListener('DOMContentLoaded', ()=>{
+        (func.bind(this.elements[0]))()
+      })
+      return this;
+    }
+    on(event, func){
+      if(event==='hover'){
+        this.elements.forEach(dom=>{
+          dom.addEventListener('mouseover',()=>{
+            const beforeStyle = dom.style;
+            (func.bind(dom))();
+            dom.addEventListener('mouseout',()=>{
+              dom.style = beforeStyle;
+            })
+          })
+        })
+      } else {
+        this.elements.forEach(dom=>{
+          dom.addEventListener(event,()=>(func.bind(dom))() )
+        })
+      }
+      return this
     }
   }
   const $ = selector => new Query(selector);
