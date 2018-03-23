@@ -1,6 +1,6 @@
 {
   "name": "@pengliheng/jquery",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "write an jQuery",
   "homepage": "https://chat.pipk.top/githubReport/pengliheng",
   "main": "index.js",
@@ -9,5 +9,11 @@
     "url": "git+https://github.com/pengliheng/jquery.git"
   },
   "author": "pengliheng",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pengliheng/jquery/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
