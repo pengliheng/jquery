@@ -1,7 +1,7 @@
 ### jquery write by pengliheng
 
 
-### 完成的任务
+### TODO
 - [x] $.ajax
 - [x] $('div').eq(index)
 - [x] $('div').each(func)
@@ -9,6 +9,8 @@
 - [x] $('div').ready(function(){})
 - [x] $('div').on('click',function(){})
 - [x] $('div').css('font-size','13px')
+- [ ] $('div').slide('li') 动画
+- [ ] $('div').toggle('className') class
 
 
 ### usage
