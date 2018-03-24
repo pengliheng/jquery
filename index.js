@@ -12,7 +12,8 @@
       console.log('type',type);
       if(type==='String') {
         this.elements = document.querySelectorAll(args);
-      }else if(type === 'HTMLLIElement'){
+      }else if(type === 'HTMLLIElement'||type === 'HTMLDocument'||type === 'Window'){
+        // 初始化dom
         this.elements = [args];
       }
       
@@ -64,25 +65,34 @@
       return this;
     }
     ready(func){
-      console.log(this.elements);
-      this.elements[0].addEventListener("DOMContentLoaded", (e)=>{
-        (func.bind(e.target))();
-      });
+      document.addEventListener('DOMContentLoaded', ()=>{
+        (func.bind(this.elements[0]))()
+      })
+      return this;
     }
-    on(event,func){
+    on(event, func){
       if(event==='hover'){
         this.elements.forEach(dom=>{
-          dom.addEventListener('mouseover', e => {
-            (func.bind(e.target))();
-          });
+          dom.addEventListener('mouseover',()=>{
+            const beforeStyle = dom.style;
+            (func.bind(dom))();
+            dom.addEventListener('mouseout',()=>{
+              dom.style = beforeStyle;
+            })
+          })
         })
       } else {
         this.elements.forEach(dom=>{
-          dom.addEventListener(event, e => {
-            (func.bind(e.target))();
-          });
-        });
+          dom.addEventListener(event,()=>(func.bind(dom))() )
+        })
       }
+      return this
+    }
+    append(html){
+      this.elements.forEach(dom=>dom.innerHTML += html)
+    }
+    html(html){
+      this.elements.forEach(dom=>dom.innerHTML = html)
     }
   }
   const $ = selector => new Query(selector);

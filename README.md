@@ -1,4 +1,17 @@
-# jquery write by pengliheng
+### jquery write by pengliheng
+
+
+### TODO
+- [x] $.ajax
+- [x] $('div').eq(index)
+- [x] $('div').each(func)
+- [x] $('div').attr('id','idName')
+- [x] $('div').ready(function(){})
+- [x] $('div').on('click',function(){})
+- [x] $('div').css('font-size','13px')
+- [ ] $('div').slide('li') 动画
+- [ ] $('div').toggle('className') class
+
 
 ### usage
 ```js
