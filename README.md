@@ -66,4 +66,4 @@ npm install @username/project-name --save
 ```
 
 
-refrence: [14.How to Work with Scoped Packages](https://docs.npmjs.com/getting-started/scoped-packages)
+reference: [14.How to Work with Scoped Packages](https://docs.npmjs.com/getting-started/scoped-packages)
