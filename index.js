@@ -9,13 +9,13 @@
   class Query {
     constructor(args) {
       const type = typeOf(args)
+      console.log('type',type);
       if(type==='String') {
         this.elements = document.querySelectorAll(args);
       }else if(type === 'HTMLLIElement'){
-        // 初始化dom
-        console.log(type);
         this.elements = [args];
       }
+      
       this.author = 'pengliheng';
       this.version = '0.0.1';
     }
@@ -63,6 +63,27 @@
       })
       return this;
     }
+    ready(func){
+      console.log(this.elements);
+      this.elements[0].addEventListener("DOMContentLoaded", (e)=>{
+        (func.bind(e.target))();
+      });
+    }
+    on(event,func){
+      if(event==='hover'){
+        this.elements.forEach(dom=>{
+          dom.addEventListener('mouseover', e => {
+            (func.bind(e.target))();
+          });
+        })
+      } else {
+        this.elements.forEach(dom=>{
+          dom.addEventListener(event, e => {
+            (func.bind(e.target))();
+          });
+        });
+      }
+    }
   }
   const $ = selector => new Query(selector);
   // 用于写属性
@@ -83,6 +104,11 @@
       .then(suc => success(suc))
       .catch(err => error(err));
   };
+
+  function stop() {
+    return this
+  }
+
   window.$ = $;
   return $;
 }(window,document,undefined));
