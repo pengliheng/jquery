@@ -71,7 +71,7 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({3:[function(require,module,exports) {
+})({4:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -246,6 +246,19 @@ var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var by = function by(name, minor) {
+  return function (o, p) {
+    var a = o[name];
+    var b = p[name];
+
+    if (a === b) {
+      minor(o, p);
+    }
+    return a < b ? -1 : 1;
+  };
+}; // import $ from '@pengliheng/jquery';
+
+
 (0, _index2.default)('ul').ready(function () {
   (0, _index2.default)('ul').css('color', 'red');
   (0, _index2.default)('ul li').eq(2).click(function () {
@@ -258,7 +271,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     type: 'POST',
     dataType: 'json',
     data: {
-      query: '{\n        viewer{\n        login\n      }\n    }'
+      query: '{\n        search(query:"yinxin630" , type:USER,first:1){\n          edges{\n            node{\n              ... on User{\n                repositories(first:100){\n                  nodes {\n                    forkCount\n                    createdAt\n                    updatedAt\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }'
     },
     error: function error(err) {
       console.log(err);
@@ -270,10 +283,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
       (0, _index2.default)('ul li').on('hover', function () {
         (0, _index2.default)(this).css('color', 'yellow').css('font-size', '20px');
       });
+      var Arr = json.data.search.edges[0].node.repositories.nodes;
+      console.log(Arr);
+      var newArr = Arr.sort(by('createdAt', by('forkCount')));
+      console.log(newArr);
+      // Arr.forEach(arr=>{
+
+      // })
     }
   });
-}); // import $ from '@pengliheng/jquery';
-},{"../index":3}],23:[function(require,module,exports) {
+});
+},{"../index":4}],25:[function(require,module,exports) {
 
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -295,7 +315,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '56489' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '64582' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -396,5 +416,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id);
   });
 }
-},{}]},{},[23,2])
+},{}]},{},[25,2])
 //# sourceMappingURL=/dist/0eaf72b4d0f0e4927de7bf731831f60a.map

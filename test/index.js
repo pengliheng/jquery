@@ -1,6 +1,18 @@
 // import $ from '@pengliheng/jquery';
 import $ from '../index';
 
+
+const by = (name, minor) => (o, p) => {
+  const a = o[name];
+  const b = p[name];
+
+  if (a === b) {
+    minor(o, p);
+  }
+  return a < b ? -1 : 1;
+};
+
+
 $('ul').ready(() => {
   $('ul').css('color', 'red');
   $('ul li').eq(2).click(() => {
@@ -14,10 +26,23 @@ $('ul').ready(() => {
     dataType: 'json',
     data: {
       query: `{
-        viewer{
-        login
-      }
-    }`,
+        search(query:"yinxin630" , type:USER,first:1){
+          edges{
+            node{
+              ... on User{
+                repositories(first:100){
+                  nodes {
+                    forkCount
+                    createdAt
+                    updatedAt
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`,
     },
     error(err) {
       console.log(err);
@@ -29,6 +54,13 @@ $('ul').ready(() => {
       $('ul li').on('hover', function () {
         $(this).css('color', 'yellow').css('font-size', '20px');
       });
+      const Arr = json.data.search.edges[0].node.repositories.nodes;
+      console.log(Arr);
+      const newArr = Arr.sort(by('createdAt', by('forkCount')));
+      console.log(newArr);
+      // Arr.forEach(arr=>{
+
+      // })
     },
   });
 });
