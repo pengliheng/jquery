@@ -1,10 +1,6 @@
 {
   "name": "@pengliheng/jquery",
-<<<<<<< HEAD
-  "version": "1.0.2",
-=======
   "version": "1.0.4",
->>>>>>> a7599df20fb7da31eb0255ac9d8eac1595764a3d
   "description": "write an jQuery",
   "homepage": "https://chat.pipk.top/githubReport/pengliheng",
   "main": "index.js",

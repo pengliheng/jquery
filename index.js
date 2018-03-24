@@ -90,9 +90,11 @@
     }
     append(html){
       this.elements.forEach(dom=>dom.innerHTML += html)
+      return this
     }
     html(html){
       this.elements.forEach(dom=>dom.innerHTML = html)
+      return this
     }
   }
   const $ = selector => new Query(selector);

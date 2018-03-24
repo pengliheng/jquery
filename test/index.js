@@ -55,18 +55,20 @@ $('ul').ready(() => {
         $(this).css('color', 'yellow').css('font-size', '20px');
       });
       const Arr = json.data.search.edges[0].node.repositories.nodes;
-      console.log(Arr);
       const newArr = Arr.sort(by('createdAt', by('forkCount')));
-      console.log(newArr);
+
       newArr.forEach((arr) => {
         $('ul').append(`
           <li>
             <span>名字: ${arr.name}</span>
-            <span>createAt: ${arr.createAt}</span>
+            <span>createdAt: ${arr.createdAt}</span>
             <span>forkCount: ${arr.forkCount}</span>
             <span>updatedAt: ${arr.updatedAt}</span>
           </li>
-        `);
+        `)
+          .css('color', '#fff')
+          .css('font-size', '30px')
+          .css('font-weight', 'blod');
       });
     },
   });

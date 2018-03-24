@@ -69,7 +69,7 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({5:[function(require,module,exports) {
+})({3:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89,7 +89,8 @@ Object.defineProperty(exports, "__esModule", {
       console.log('type', type);
       if (type === 'String') {
         this.elements = document.querySelectorAll(args);
-      } else if (type === 'HTMLLIElement') {
+      } else if (type === 'HTMLLIElement' || type === 'HTMLDocument' || type === 'Window') {
+        // 初始化dom
         this.elements = [args];
       }
 
@@ -140,25 +141,36 @@ Object.defineProperty(exports, "__esModule", {
       return this;
     }
     ready(func) {
-      console.log(this.elements);
-      this.elements[0].addEventListener("DOMContentLoaded", e => {
-        func.bind(e.target)();
+      document.addEventListener('DOMContentLoaded', () => {
+        func.bind(this.elements[0])();
       });
+      return this;
     }
     on(event, func) {
       if (event === 'hover') {
         this.elements.forEach(dom => {
-          dom.addEventListener('mouseover', e => {
-            func.bind(e.target)();
+          dom.addEventListener('mouseover', () => {
+            const beforeStyle = dom.style;
+            func.bind(dom)();
+            dom.addEventListener('mouseout', () => {
+              dom.style = beforeStyle;
+            });
           });
         });
       } else {
         this.elements.forEach(dom => {
-          dom.addEventListener(event, e => {
-            func.bind(e.target)();
-          });
+          dom.addEventListener(event, () => func.bind(dom)());
         });
       }
+      return this;
+    }
+    append(html) {
+      this.elements.forEach(dom => dom.innerHTML += html);
+      return this;
+    }
+    html(html) {
+      this.elements.forEach(dom => dom.innerHTML = html);
+      return this;
     }
   }
   const $ = selector => new Query(selector);
@@ -187,7 +199,7 @@ Object.defineProperty(exports, "__esModule", {
 })(window, document, undefined);
 
 exports.default = $;
-},{}],4:[function(require,module,exports) {
+},{}],2:[function(require,module,exports) {
 "use strict";
 
 var _index = require("../index");
@@ -196,22 +208,45 @@ var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _index2.default)(document).ready(function () {
+const by = (name, minor) => (o, p) => {
+  const a = o[name];
+  const b = p[name];
+
+  if (a === b) {
+    minor(o, p);
+  }
+  return a < b ? -1 : 1;
+}; // import $ from '@pengliheng/jquery';
+
+
+(0, _index2.default)('ul').ready(() => {
   (0, _index2.default)('ul').css('color', 'red');
   (0, _index2.default)('ul li').eq(2).click(() => {
     (0, _index2.default)('li').each((dom, i) => {
-      (0, _index2.default)(dom).css('font-size', `${(i + 1) * 10}px`);
+      (0, _index2.default)(dom).css('color', `rgb(0,0,${i * 60})`);
     });
   });
-  console.log('ready', this);
   _index2.default.ajax({
     url: 'https://chat.pipk.top/graphql',
     type: 'POST',
     dataType: 'json',
     data: {
       query: `{
-        viewer{
-          login
+        search(query:"yinxin630" , type:USER,first:1){
+          edges{
+            node{
+              ... on User{
+                repositories(first:100){
+                  nodes {
+                    forkCount
+                    createdAt
+                    updatedAt
+                    name
+                  }
+                }
+              }
+            }
+          }
         }
       }`
     },
@@ -219,14 +254,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
       console.log(err);
     },
     success(json) {
-      console.log(json);
-      (0, _index2.default)('ul > li').eq(3).on('hover', function () {
-        (0, _index2.default)(this).css('color', 'blue');
+      (0, _index2.default)('ul li').on('click', function () {
+        (0, _index2.default)(this).css('color', 'green');
+      });
+      (0, _index2.default)('ul li').on('hover', function () {
+        (0, _index2.default)(this).css('color', 'yellow').css('font-size', '20px');
+      });
+      const Arr = json.data.search.edges[0].node.repositories.nodes;
+      const newArr = Arr.sort(by('createdAt', by('forkCount')));
+
+      newArr.forEach(arr => {
+        (0, _index2.default)('ul').append(`
+          <li>
+            <span>名字: ${arr.name}</span>
+            <span>createdAt: ${arr.createdAt}</span>
+            <span>forkCount: ${arr.forkCount}</span>
+            <span>updatedAt: ${arr.updatedAt}</span>
+          </li>
+        `).css('color', '#fff').css('font-size', '30px').css('font-weight', 'blod');
       });
     }
   });
-}); // import $ from '@pengliheng/jquery';
-},{"../index":5}],0:[function(require,module,exports) {
+});
+},{"../index":3}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
@@ -244,7 +294,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent && typeof WebSocket !== 'undefined') {
-  var ws = new WebSocket('ws://' + window.location.hostname + ':50791/');
+  var ws = new WebSocket('ws://' + window.location.hostname + ':64892/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
@@ -345,4 +395,4 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id)
   });
 }
-},{}]},{},[0,4])
+},{}]},{},[0,2])
