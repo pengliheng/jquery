@@ -10,17 +10,8 @@
   },
   "author": "pengliheng",
   "license": "ISC",
-  "dependencies": {
-    "@pengliheng/github-report": "^1.2.17",
-    "@pengliheng/jquery": "^1.0.4",
-    "jquery": "^3.3.1"
-  },
   "bugs": {
     "url": "https://github.com/pengliheng/jquery/issues"
-  },
-  "devDependencies": {
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.9.0"
   },
   "scripts": {
     "t": "parcel test/index.html",
