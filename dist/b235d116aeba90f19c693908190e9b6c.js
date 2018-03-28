@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", {
       const type = typeOf(args);
       console.log('type', type);
       if (type === 'String') {
-        this.elements = document.querySelectorAll(args);
+        this.elements = Array.prototype.slice.call(document.querySelectorAll(args));
       } else if (type === 'HTMLLIElement' || type === 'HTMLDocument' || type === 'Window') {
         // 初始化dom
         this.elements = [args];
@@ -172,6 +172,18 @@ Object.defineProperty(exports, "__esModule", {
       this.elements.forEach(dom => dom.innerHTML = html);
       return this;
     }
+
+    typeof() {
+      return this.elements.map(dom => {
+        return Object.prototype.toString.call(dom).replace(/(\[object HTML)|(Element\])/g, '').toLocaleLowerCase();
+      });
+    }
+
+    is(name) {
+      return this.elements.map(dom => {
+        return Object.prototype.toString.call(dom).replace(/(\[object HTML)|(Element\])/g, '').toLocaleLowerCase() === name;
+      });
+    }
   }
   const $ = selector => new Query(selector);
   // 用于写属性
@@ -208,74 +220,78 @@ var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const by = (name, minor) => (o, p) => {
-  const a = o[name];
-  const b = p[name];
+// const by = (name, minor) => (o, p) => {
+//   const a = o[name];
+//   const b = p[name];
 
-  if (a === b) {
-    minor(o, p);
-  }
-  return a < b ? -1 : 1;
-}; // import $ from '@pengliheng/jquery';
+//   if (a === b) {
+//     minor(o, p);
+//   }
+//   return a < b ? -1 : 1;
+// };
 
 
 (0, _index2.default)('ul').ready(() => {
-  (0, _index2.default)('ul').css('color', 'red');
-  (0, _index2.default)('ul li').eq(2).click(() => {
-    (0, _index2.default)('li').each((dom, i) => {
-      (0, _index2.default)(dom).css('color', `rgb(0,0,${i * 60})`);
-    });
-  });
-  _index2.default.ajax({
-    url: 'https://chat.pipk.top/graphql',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      query: `{
-        search(query:"yinxin630" , type:USER,first:1){
-          edges{
-            node{
-              ... on User{
-                repositories(first:100){
-                  nodes {
-                    forkCount
-                    createdAt
-                    updatedAt
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
-      }`
-    },
-    error(err) {
-      console.log(err);
-    },
-    success(json) {
-      (0, _index2.default)('ul li').on('click', function () {
-        (0, _index2.default)(this).css('color', 'green');
-      });
-      (0, _index2.default)('ul li').on('hover', function () {
-        (0, _index2.default)(this).css('color', 'yellow').css('font-size', '20px');
-      });
-      const Arr = json.data.search.edges[0].node.repositories.nodes;
-      const newArr = Arr.sort(by('createdAt', by('forkCount')));
+  // $('ul').css('color', 'red');
+  // $('ul li').eq(2).click(() => {
+  //   $('li').each((dom, i) => {
+  //     $(dom).css('color', `rgb(0,0,${i * 60})`);
+  //   });
+  // });
+  // $.ajax({
+  //   url: 'https://chat.pipk.top/graphql',
+  //   type: 'POST',
+  //   dataType: 'json',
+  //   data: {
+  //     query: `{
+  //       search(query:"yinxin630" , type:USER,first:1){
+  //         edges{
+  //           node{
+  //             ... on User{
+  //               repositories(first:100){
+  //                 nodes {
+  //                   forkCount
+  //                   createdAt
+  //                   updatedAt
+  //                   name
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }`,
+  //   },
+  //   error(err) {
+  //     console.log(err);
+  //   },
+  //   success(json) {
+  // $('ul li').on('click', function () {
+  //   $(this).css('color', 'green');
+  // });
+  // $('ul li').on('hover', function () {
+  //   $(this).css('color', 'yellow').css('font-size', '20px');
+  // });
+  // const Arr = json.data.search.edges[0].node.repositories.nodes;
+  // const newArr = Arr.sort(by('createdAt', by('forkCount')));
 
-      newArr.forEach(arr => {
-        (0, _index2.default)('ul').append(`
-          <li>
-            <span>名字: ${arr.name}</span>
-            <span>createdAt: ${arr.createdAt}</span>
-            <span>forkCount: ${arr.forkCount}</span>
-            <span>updatedAt: ${arr.updatedAt}</span>
-          </li>
-        `).css('color', '#fff').css('font-size', '30px').css('font-weight', 'blod');
-      });
-    }
-  });
-});
+  // newArr.forEach((arr) => {
+  //   $('ul').append(`
+  //     <li>
+  //       <span>名字: ${arr.name}</span>
+  //       <span>createdAt: ${arr.createdAt}</span>
+  //       <span>forkCount: ${arr.forkCount}</span>
+  //       <span>updatedAt: ${arr.updatedAt}</span>
+  //     </li>
+  //   `)
+  //     .css('color', '#fff')
+  //     .css('font-size', '30px')
+  //     .css('font-weight', 'blod');
+  // });
+  // },
+  // });
+  console.log((0, _index2.default)('li').typeof());
+}); // import $ from '@pengliheng/jquery';
 },{"../index":3}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -294,7 +310,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent && typeof WebSocket !== 'undefined') {
-  var ws = new WebSocket('ws://' + window.location.hostname + ':64892/');
+  var ws = new WebSocket('ws://' + window.location.hostname + ':59048/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 

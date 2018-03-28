@@ -11,7 +11,7 @@
       const type = typeOf(args)
       console.log('type',type);
       if(type==='String') {
-        this.elements = document.querySelectorAll(args);
+        this.elements = Array.prototype.slice.call(document.querySelectorAll(args));
       }else if(type === 'HTMLLIElement'||type === 'HTMLDocument'||type === 'Window'){
         // 初始化dom
         this.elements = [args];
@@ -95,6 +95,22 @@
     html(html){
       this.elements.forEach(dom=>dom.innerHTML = html)
       return this
+    }
+
+    typeof(){
+      return this.elements.map(dom=>{
+        return Object.prototype.toString.call(dom)
+          .replace(/(\[object HTML)|(Element\])/g,'')
+          .toLocaleLowerCase();
+      })
+    }
+    
+    is(name){
+      return this.elements.map(dom=>{
+        return Object.prototype.toString.call(dom)
+          .replace(/(\[object HTML)|(Element\])/g,'')
+          .toLocaleLowerCase() === name;
+      })
     }
   }
   const $ = selector => new Query(selector);
